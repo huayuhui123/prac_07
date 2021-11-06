@@ -22,8 +22,9 @@ def run_tests():
     print(new_album)
     # Test mark_completed()
     # TODO: Write tests to show the mark_completed() method works
-
+    print(new_album.mark_required())
     # TODO: Add tests for any untested methods (and more tests as needed)
+    print(new_album.mark_completed())
 
 
 run_tests()

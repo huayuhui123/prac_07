@@ -8,8 +8,18 @@ class Album:
         self.year=year
         self.is_completed=is_completed
 
+    def mark_completed(self):
+        if self.is_completed:
+            pass
+
+    def mark_required(self):
+        if not self.is_completed:
+            return "*"
+
     def __str__(self):
         if not self.is_completed:
-            print("*",end='')
-        return "{:<30} by {:<20}({})".format(self.title, self.artist, self.year)
+            return "{}{:<30} by {:<20}({})".format(self.mark_required(),self.title, self.artist, self.year)
+        else:
+            return "{}{:<30} by {:<20}({})".format(self.mark_completed(),self.title, self.artist, self.year)
+
 
