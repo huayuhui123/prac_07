@@ -1,6 +1,8 @@
 """..."""
 
 import csv
+from operator import attrgetter
+from album import Album
 
 
 class AlbumCollection:
@@ -12,11 +14,12 @@ class AlbumCollection:
 
     def load_albums(self, filename=None):
         data_file = open(filename, "r")
-        self.albums = [line for line in csv.reader(open(filename))]
+        self.albums = [Album(line) for line in csv.reader(open(filename))]
         data_file.close()
 
     def sort(self):
-        pass
+        self.albums.sort(key=attrgetter('title', 'year'))
+        print(self.albums)
 
     def add_album(self):
         pass
