@@ -28,6 +28,11 @@ def run_tests():
     album_collection.add_album(Album("How Can It Be", "Lauren Daigle", 2015, False))
 
     # TODO: Complete these tests and add any more as needed to test all methods of your class
+    print(album_collection)
+    album_collection.save_albums()
+    album_collection.sort()
+    for album in album_collection.albums:
+        print(album)
 
 
 run_tests()
