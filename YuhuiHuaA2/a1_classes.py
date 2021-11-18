@@ -3,7 +3,7 @@
 
 from album import Album
 import csv
-from operator import itemgetter
+from operator import attrgetter
 
 menu = """Menu:
 L - List all albums
@@ -11,7 +11,7 @@ A - Add new album
 M - Mark an album as completed
 Q - Quit"""
 data_file = open("albums.csv", "r")
-inform = [line for line in csv.reader(open("albums.csv"))]
+inform = [Album(line[0], line[1], int(line[2]), line[3]) for line in csv.reader(open("albums.csv"))]
 
 
 def lists():
@@ -21,23 +21,22 @@ def lists():
     author = []
     year = []
     condition = []
-    for row in sorted(inform, key=itemgetter(1, 0)):
-        # sort the list by author then by title
-        # traverse all thing in list and append to gain classified information
-        name.append(row[0])
-        author.append(row[1])
-        year.append(row[2])
-        condition.append(row[3])
+    inform.sort(key=attrgetter('year'))
+    for index, album in enumerate(inform):
+        if not album.is_completed:
+            print(album.mark_required(), index+1, album)
+        else:
+            print(" ", index+1, album)
+        name.append(album.title)
+        author.append(album.artist)
+        year.append(album.year)
+        condition.append(album.is_completed)
     long = len(name)
     require = 0
     for i in range(1, long + 1, 1):
-        if condition[i - 1] == "r":
-            print("*", end="")
-            print("{}.{:<30} by {:<20}({})".format(i, name[i - 1], author[i - 1], year[i - 1]))
+        if not inform[i - 1].is_completed:
             require = require + 1
-        else:
-            print(" {}.{:<30} by {:<20}({})".format(i, name[i - 1], author[i - 1], year[i - 1]))
-    if "r" in condition:
+    if "r" or 'False' in condition:
         print("You need to listen to {} albums".format(require))
     else:
         print("No albums left to listen to. Why not add a new album?")
@@ -46,6 +45,7 @@ def lists():
 def add():
     """This function help you to add new albums into the list.
     You should input title,artist and year of the new album."""
+
     def add_new():
         """This function can return the new album's information."""
         new = []
@@ -73,25 +73,29 @@ def add():
                 print("Input can not be blank")
             print("Input can not be blank")
             title = input("Title:")
+
     new_album = add_new()
-    new_album.append("r")
-    inform.append(new_album)
-    csv.writer(open('albums.csv', 'w', newline='')).writerow(inform)
+    new_album.append('False')
+    inform.append(Album(new_album[0], new_album[1], new_album[2], new_album[3]))
+    open("albums.csv", 'w').close()
+    for album in inform:
+        csv.writer(open('albums.csv', 'a', newline='')).writerow([album.title, album.artist, album.year,
+                                                                 album.is_completed])
 
 
 def mark():
     """This function can mark the albums from r to c.
     But you can not mark it from c to r."""
     condition = []
-    for row in inform:
-        condition.append(row[3])
-    if 'r' not in condition:
+    for album in inform:
+        condition.append(album.is_completed)
+    if False not in condition:
         print("No required albums")
     else:
         lists()
         print("Enter the number of an album to mark as completed")
         m = input(">>>")
-        while m.isalpha() or inform[int(float(m)) - 1][3] != "r":
+        while m.isalpha() or inform[int(float(m)) - 1].is_completed:
             # By this way,you can input letters ,int or float
             # All these can be right so can enter to judge
             if m.isalpha() or int(float(m)) != float(m):
@@ -101,13 +105,16 @@ def mark():
             elif int(float(m)) > len(inform):
                 print("Too large!The number must be under {}".format(len(inform)))
             else:
-                print("You have already listened to ", (inform[int(float(m)) - 1][0]))
+                print("You have already listened to ", inform[int(float(m)) - 1].title)
                 break
             m = input(">>>")
-        if inform[int(m) - 1][3] == 'r':
-            inform[int(m) - 1][3] = 'c'
-            csv.writer(open('albums.csv', 'w', newline='')).writerow(inform)
-            print("You listened to{}".format(inform[int(m) - 1][0]))
+        if not inform[int(m) - 1].is_completed:
+            inform[int(m) - 1].is_completed = 'True'
+            open("albums.csv", 'w').close()
+            for album in inform:
+                csv.writer(open('albums.csv', 'a', newline='')).writerow([album.title, album.artist, album.year,
+                                                                         album.is_completed])
+            print("You listened to {}".format(inform[int(m) - 1].title))
 
 
 def main_menu():
@@ -137,4 +144,3 @@ def main():
 
 
 main()
-
