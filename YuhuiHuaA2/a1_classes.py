@@ -24,9 +24,9 @@ def lists():
     inform.sort(key=attrgetter('year'))
     for index, album in enumerate(inform):
         if not album.is_completed:
-            print(album.mark_required(), index+1, album)
+            print(album.mark_required(), index+1, album.__str__().lstrip('*'))
         else:
-            print(" ", index+1, album)
+            print(" ", index+1, album.__str__().lstrip(' '))
         name.append(album.title)
         author.append(album.artist)
         year.append(album.year)

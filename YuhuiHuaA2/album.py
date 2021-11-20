@@ -14,7 +14,7 @@ class Album:
 
     def mark_completed(self):
         if self.is_completed or self.is_completed == 'c':
-            pass
+            return ' '
 
     def mark_required(self):
         if not self.is_completed or self.is_completed == 'r':
@@ -22,6 +22,6 @@ class Album:
 
     def __str__(self):
         if not self.is_completed or self.is_completed == 'r':
-            return "{}{:<33} by {:<20}({})".format(self.mark_required(), self.title, self.artist, self.year)
+            return "{}{:<30} by {:<20}({})".format(self.mark_required(), self.title, self.artist, self.year)
         elif self.is_completed or self.is_completed == 'c':
             return "{}{:<30} by {:<20}({})".format(self.mark_completed(), self.title, self.artist, self.year)
