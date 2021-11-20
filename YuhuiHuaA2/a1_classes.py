@@ -1,4 +1,13 @@
-"""..."""
+"""
+Name:a1_classes
+Date started:2021.11.17
+Introduce:These functions can help you know information of albums you have.You can chose "L" to
+          see them,or choose "A" to add new albums ,or choose "M" to mark the condition from "r"
+          to "c".When you choose "Q",you can get out of this function and you can know how many
+          albums you have saved.Different from A1,albums in A2 are stored in a list of instantiated
+          album objects,so something will be changed.
+Github URL:https://github.com/huayuhui123/Assignment2.git
+"""
 # Copy your first assignment to this file, then update it to use the Album class
 
 from album import Album
@@ -15,7 +24,7 @@ inform = [Album(line[0], line[1], int(line[2]), line[3]) for line in csv.reader(
 
 
 def lists():
-    """This function can list out the albums you have.
+    """Lists out the albums you have.
     You can know name,author,year and condition through it."""
     name = []
     author = []
@@ -43,11 +52,11 @@ def lists():
 
 
 def add():
-    """This function help you to add new albums into the list.
+    """Helps you to add new albums into the list.
     You should input title,artist and year of the new album."""
 
     def add_new():
-        """This function can return the new album's information."""
+        """Return the new album's information."""
         new = []
         title = input("Title:")
         while title != "" and title != " ":
@@ -84,7 +93,7 @@ def add():
 
 
 def mark():
-    """This function can mark the albums from r to c.
+    """Mark the albums from r to c.
     But you can not mark it from c to r."""
     condition = []
     for album in inform:
@@ -118,7 +127,7 @@ def mark():
 
 
 def main_menu():
-    """This function can provide choices you can choose and jump to the function."""
+    """Provide choices you can choose and jump to the function."""
     print("{} albums loaded".format(len(inform)))
     print(menu)
     choice = input(">>>").upper()
@@ -137,7 +146,7 @@ def main_menu():
 
 
 def main():
-    """This function mainly about how to execute."""
+    """Mainly about how to execute."""
     print("Album Tracker 1.6 - by Yu hui Hua")
     main_menu()
     data_file.close()
